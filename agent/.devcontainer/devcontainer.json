@@ -5,20 +5,19 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	
-// Monter le socket X11 hôte dans le conteneur
-  "mounts": [
-    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind"
-  ],
-  
-  // Transmettre la variable d'affichage
-  "containerEnv": {
-    "DISPLAY": "${localEnv:DISPLAY}"
-  },
-  
-  // Donner l'accès au serveur X11 (si nécessaire sur certains systèmes)
-  "runArgs": [
-    "--net=host"
-  ],
 
+	// Affichage des fenêtres sur Windows 11 : serveur X11 de WSLg partagé par Docker Desktop
+	"mounts": [
+		"source=/run/desktop/mnt/host/wslg/.X11-unix,target=/tmp/.X11-unix,type=bind"
+	],
+
+	// Transmettre la variable d'affichage
+	"containerEnv": {
+		"DISPLAY": ":0"
+	},
+
+	// Permet de joindre Ollama qui tourne sur Windows (host.docker.internal:11434)
+	"runArgs": [
+		"--add-host=host.docker.internal:host-gateway"
+	]
 }
