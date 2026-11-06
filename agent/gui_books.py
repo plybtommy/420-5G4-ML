@@ -6,19 +6,11 @@ import os
 sys.path.append(os.path.join(os.getcwd(), "build"))
 import bibliotheque_py
 
-
-class BookView(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-
-        self.title("Gestion de la Bibliothèque - Livres")
-        self.geometry("600x400")
-
-        # Initialisation de la bibliothèque et chargement des données
-        self.library = bibliotheque_py.Library()
-        self.file_manager = bibliotheque_py.FileManager("data/books.txt", "data/users.txt")
-        self.file_manager.load_library_data(self.library)
-
+class BookView(ctk.CTkFrame):
+    def __init__(self, master, library, file_manager):
+        super().__init__(master)
+        self.library = library
+        self.file_manager = file_manager
         self.setup_ui()
 
     def setup_ui(self):
@@ -81,17 +73,93 @@ class BookView(ctk.CTk):
                 print("Erreur : Aucun livre trouvé avec cet ISBN.")
 
     def refresh_book_list(self):
-        # Nettoyer la liste actuelle
         for widget in self.book_list_frame.winfo_children():
             widget.destroy()
 
-        # Récupérer les livres via le module C++
         books = self.library.get_all_books()
         for book in books:
             book_text = f"{book.title} - {book.author} (ISBN: {book.isbn}) [{'Disponible' if book.is_available else 'Emprunté'}]"
             lbl = ctk.CTkLabel(self.book_list_frame, text=book_text, anchor="w")
             lbl.pack(fill="x", padx=10, pady=5)
 
+class UserView(ctk.CTkFrame):
+    def __init__(self, master, library):
+        super().__init__(master)
+        self.library = library
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.label = ctk.CTkLabel(self, text="Gestion des Utilisateurs", font=("Arial", 20))
+        self.label.pack(pady=20)
+
+        # Formulaire d'ajout
+        self.form_frame = ctk.CTkFrame(self)
+        self.form_frame.pack(pady=10, padx=20, fill="x")
+
+        self.entry_name = ctk.CTkEntry(self.form_frame, placeholder_text="Nom")
+        self.entry_name.pack(side="left", padx=5, pady=10, expand=True, fill="x")
+
+        self.entry_id = ctk.CTkEntry(self.form_frame, placeholder_text="ID Utilisateur")
+        self.entry_id.pack(side="left", padx=5, pady=10, expand=True, fill="x")
+
+        self.add_button = ctk.CTkButton(self.form_frame, text="Ajouter", command=self.add_user)
+        self.add_button.pack(side="left", padx=5, pady=10)
+
+        # Liste des utilisateurs
+        self.user_list_frame = ctk.CTkScrollableFrame(self, width=500, height=300)
+        self.user_list_frame.pack(pady=10, padx=20, fill="both", expand=True)
+
+        self.refresh_user_list()
+
+    def add_user(self):
+        name = self.entry_name.get()
+        user_id = self.entry_id.get()
+
+        if name and user_id:
+            if self.library.add_user(bibliotheque_py.User(name, user_id)):
+                self.entry_name.delete(0, 'end')
+                self.entry_id.delete(0, 'end')
+                self.refresh_user_list()
+            else:
+                print("Erreur : Un utilisateur avec cet ID existe déjà.")
+
+    def refresh_user_list(self):
+
+        for widget in self.user_list_frame.winfo_children():
+            widget.destroy()
+
+        users = self.library.get_all_users()
+        for user in users:
+            user_text = f"ID: {user.user_id} - Nom: {user.name}"
+            lbl = ctk.CTkLabel(self.user_list_frame, text=user_text, anchor="w")
+            lbl.pack(fill="x", padx=10, pady=5)
+
+class MainApp(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Gestion de la Bibliothèque")
+        self.geometry("700x500")
+
+        # Shared library and file manager
+        self.library = bibliotheque_py.Library()
+        self.file_manager = bibliotheque_py.FileManager("data/books.txt", "data/users.txt")
+        self.file_manager.load_library_data(self.library)
+
+        # Tab view
+        self.tabview = ctk.CTkTabview(self)
+        self.tabview.pack(padx=20, pady=20, fill="both", expand=True)
+
+        self.tabview.add("Livres")
+        self.tabview.add("Utilisateurs")
+
+        # Views
+        self.book_view = BookView(self.tabview.tab("Livres"), self.library, self.file_manager)
+        self.book_view.pack(fill="both", expand=True)
+
+        self.user_view = UserView(self.tabview.tab("Utilisateurs"), self.library)
+        self.user_view.pack(fill="both", expand=True)
+
 if __name__ == "__main__":
-    app = BookView()
+    app = MainApp()
     app.mainloop()

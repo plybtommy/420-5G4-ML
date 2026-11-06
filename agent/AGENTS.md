@@ -23,7 +23,7 @@ Remplacer le menu console de `main.cpp` par une interface graphique Python utili
 - [x] Mise à jour de CMake pour le module Python
 - [x] Vue Livres : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 
-- [ ] Vue Utilisateurs : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
+- [x] Vue Utilisateurs : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 - [ ] Vue Opérations : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 - [ ] Implémentation Recherche, Statistiques et Sauvegarde
 - [ ] Tests de persistance
