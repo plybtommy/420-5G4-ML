@@ -1,15 +1,21 @@
 cmake_minimum_required(VERSION 3.21)
 project(bibliotheque)
 
-file(GLOB SOURCES "*.cpp")
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Find pybind11
+find_package(pybind11 REQUIRED)
 
-# Specifie qu'on veut la version C++17 du langage
-set_target_properties(${PROJECT_NAME} PROPERTIES
+# Build the main executable (console version)
+file(GLOB EXE_SOURCES "main.cpp" "library.cpp" "book.cpp" "user.cpp" "filemanager.cpp")
+add_executable(bibliotheque ${EXE_SOURCES})
+
+# Build the Python module
+pybind11_add_module(bibliotheque_py bindings.cpp library.cpp book.cpp user.cpp filemanager.cpp)
+
+set_target_properties(bibliotheque bibliotheque_py PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED YES
     CXX_EXTENSIONS NO
 )
 
-# flag pour tous les warnings possible
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(bibliotheque PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(bibliotheque_py PRIVATE -Wall -Wextra -Wpedantic)

@@ -2,8 +2,8 @@
 
 ## Phase 1 : Préparation et Liaison (Le "Pont" C++ -> Python)
 - [x] Installation des dépendances (`pybind11`, `customtkinter`).
-- [ ] Création du wrapper Pybind11 (`bindings.cpp`) pour exposer `Library`, `Book`, `User` et `FileManager`.
-- [ ] Mise à jour de CMake pour compiler un module Python (`pybind11_add_module`).
+- [x] Création du wrapper Pybind11 (`bindings.cpp`) pour exposer `Library`, `Book`, `User` et `FileManager`.
+- [x] Mise à jour de CMake pour compiler un module Python (`pybind11_add_module`).
 
 ## Phase 2 : Développement Itératif des Vues (Interface -> Liaison -> Test)
 - [ ] **Vue Livres** :
