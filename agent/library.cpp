@@ -96,8 +96,12 @@ vector<Book*> Library::getAllBooks() {
 }
 
 // Add user to library
-void Library::addUser(const User& user) {
+bool Library::addUser(const User& user) {
+    if (findUserById(user.getUserId()) != nullptr) {
+        return false;
+    }
     users.push_back(make_unique<User>(user));
+    return true;
 }
 
 // Find user by ID
