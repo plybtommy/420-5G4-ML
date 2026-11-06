@@ -9,8 +9,12 @@ using namespace std;
 Library::Library() {}
 
 // Add book to library
-void Library::addBook(const Book& book) {
+bool Library::addBook(const Book& book) {
+    if (findBookByISBN(book.getISBN()) != nullptr) {
+        return false;
+    }
     books.push_back(make_unique<Book>(book));
+    return true;
 }
 
 // Remove book from library

@@ -21,7 +21,7 @@ Remplacer le menu console de `main.cpp` par une interface graphique Python utili
 - [x] Installation des dépendances (pybind11, customtkinter)
 - [x] Création du wrapper Pybind11 (`bindings.cpp`) incluant `FileManager`
 - [x] Mise à jour de CMake pour le module Python
-- [ ] Vue Livres : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
+- [x] Vue Livres : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 
 - [ ] Vue Utilisateurs : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 - [ ] Vue Opérations : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
