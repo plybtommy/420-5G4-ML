@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import sys
 import os
+from gui_operations import OperationsView
+
 
 # Add the build directory to sys.path to import the compiled module
 sys.path.append(os.path.join(os.getcwd(), "build"))
@@ -16,6 +18,11 @@ class BookView(ctk.CTkFrame):
     def setup_ui(self):
         self.label = ctk.CTkLabel(self, text="Gestion des Livres", font=("Arial", 20))
         self.label.pack(pady=20)
+
+        # Message area
+        self.status_label = ctk.CTkLabel(self, text="", font=("Arial", 12), text_color="gray")
+        self.status_label.pack(pady=5)
+
 
         # Formulaire d'ajout
         self.form_frame = ctk.CTkFrame(self)
@@ -49,6 +56,12 @@ class BookView(ctk.CTkFrame):
 
         self.refresh_book_list()
 
+    def show_message(self, text, is_error=False):
+        color = "red" if is_error else "green"
+        self.status_label.configure(text=text, text_color=color)
+        # Reset message after 3 seconds
+        self.after(3000, lambda: self.status_label.configure(text=""))
+
     def add_book(self):
         title = self.entry_title.get()
         author = self.entry_author.get()
@@ -60,8 +73,11 @@ class BookView(ctk.CTkFrame):
                 self.entry_author.delete(0, 'end')
                 self.entry_isbn.delete(0, 'end')
                 self.refresh_book_list()
+                self.show_message(f"Livre '{title}' ajouté avec succès")
             else:
-                print("Erreur : Un livre avec cet ISBN existe déjà.")
+                self.show_message("Erreur : Un livre avec cet ISBN existe déjà.", True)
+        else:
+            self.show_message("Erreur : Veuillez remplir tous les champs", True)
 
     def delete_book(self):
         isbn = self.entry_delete_isbn.get()
@@ -69,8 +85,11 @@ class BookView(ctk.CTkFrame):
             if self.library.remove_book(isbn):
                 self.entry_delete_isbn.delete(0, 'end')
                 self.refresh_book_list()
+                self.show_message(f"Livre {isbn} supprimé")
             else:
-                print("Erreur : Aucun livre trouvé avec cet ISBN.")
+                self.show_message("Erreur : Aucun livre trouvé avec cet ISBN.", True)
+        else:
+            self.show_message("Erreur : Veuillez saisir un ISBN", True)
 
     def refresh_book_list(self):
         for widget in self.book_list_frame.winfo_children():
@@ -92,6 +111,11 @@ class UserView(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Gestion des Utilisateurs", font=("Arial", 20))
         self.label.pack(pady=20)
 
+        # Message area
+        self.status_label = ctk.CTkLabel(self, text="", font=("Arial", 12), text_color="gray")
+        self.status_label.pack(pady=5)
+
+
         # Formulaire d'ajout
         self.form_frame = ctk.CTkFrame(self)
         self.form_frame.pack(pady=10, padx=20, fill="x")
@@ -111,6 +135,11 @@ class UserView(ctk.CTkFrame):
 
         self.refresh_user_list()
 
+    def show_message(self, text, is_error=False):
+        color = "red" if is_error else "green"
+        self.status_label.configure(text=text, text_color=color)
+        self.after(3000, lambda: self.status_label.configure(text=""))
+
     def add_user(self):
         name = self.entry_name.get()
         user_id = self.entry_id.get()
@@ -120,8 +149,11 @@ class UserView(ctk.CTkFrame):
                 self.entry_name.delete(0, 'end')
                 self.entry_id.delete(0, 'end')
                 self.refresh_user_list()
+                self.show_message(f"Utilisateur '{name}' ajouté")
             else:
-                print("Erreur : Un utilisateur avec cet ID existe déjà.")
+                self.show_message("Erreur : Un utilisateur avec cet ID existe déjà.", True)
+        else:
+            self.show_message("Erreur : Veuillez remplir tous les champs", True)
 
     def refresh_user_list(self):
 
@@ -152,6 +184,8 @@ class MainApp(ctk.CTk):
 
         self.tabview.add("Livres")
         self.tabview.add("Utilisateurs")
+        self.tabview.add("Opérations")
+
 
         # Views
         self.book_view = BookView(self.tabview.tab("Livres"), self.library, self.file_manager)
@@ -159,6 +193,11 @@ class MainApp(ctk.CTk):
 
         self.user_view = UserView(self.tabview.tab("Utilisateurs"), self.library)
         self.user_view.pack(fill="both", expand=True)
+
+        self.ops_view = OperationsView(self.tabview.tab("Opérations"), self.library, refresh_callback=self.book_view.refresh_book_list)
+        self.ops_view.pack(fill="both", expand=True)
+
+
 
 if __name__ == "__main__":
     app = MainApp()
