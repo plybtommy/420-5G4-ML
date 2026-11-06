@@ -18,10 +18,11 @@ Remplacer le menu console de `main.cpp` par une interface graphique Python utili
 - **Data**: Test files located in `data/books.txt` and `data/users.txt`.
 
 ## Avancement
-- [ ] Installation des dépendances (pybind11, customtkinter)
-- [ ] Création du wrapper Pybind11 (`bindings.cpp`)
+- [x] Installation des dépendances (pybind11, customtkinter)
+- [ ] Création du wrapper Pybind11 (`bindings.cpp`) incluant `FileManager`
 - [ ] Mise à jour de CMake pour le module Python
-- [ ] Structure de l'application GUI (`LibraryApp`)
-- [ ] Vues Livres, Utilisateurs et Opérations
-- [ ] Liaison GUI $\rightarrow$ Logique C++
+- [ ] Vue Livres : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
+- [ ] Vue Utilisateurs : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
+- [ ] Vue Opérations : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
+- [ ] Implémentation Recherche, Statistiques et Sauvegarde
 - [ ] Tests de persistance
