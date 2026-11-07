@@ -5,7 +5,9 @@ from gui_operations import OperationsView
 
 
 # Add the build directory to sys.path to import the compiled module
-sys.path.append(os.path.join(os.getcwd(), "build"))
+base_dir = os.path.dirname(os.path.abspath(__file__))
+build_dir = os.path.join(base_dir, "build")
+sys.path.append(build_dir)
 import bibliotheque_py
 
 class BookView(ctk.CTkFrame):
@@ -276,7 +278,9 @@ class MainApp(ctk.CTk):
 
         # Shared library and file manager
         self.library = bibliotheque_py.Library()
-        self.file_manager = bibliotheque_py.FileManager("data/books.txt", "data/users.txt")
+        books_path = os.path.join(base_dir, "data", "books.txt")
+        users_path = os.path.join(base_dir, "data", "users.txt")
+        self.file_manager = bibliotheque_py.FileManager(books_path, users_path)
         self.file_manager.load_library_data(self.library)
 
         # Tab view
