@@ -26,4 +26,4 @@ Remplacer le menu console de `main.cpp` par une interface graphique Python utili
 - [x] Vue Utilisateurs : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 - [x] Vue Opérations : Interface $\rightarrow$ Liaison C++ $\rightarrow$ Test
 - [x] Implémentation Recherche, Statistiques et Sauvegarde
-- [ ] Tests de persistance
+- [x] Tests de persistance

@@ -25,5 +25,5 @@
 - [ ] **Sauvegarde** : Liaison avec `FileManager` pour persister les données.
 
 ## Phase 4 : Finalisation
-- [ ] Tests de bout en bout et vérification de la persistance des données.
-- [ ] Nettoyage du code.
+- [x] Tests de bout en bout et vérification de la persistance des données.
+- [x] Nettoyage du code.

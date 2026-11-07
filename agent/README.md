@@ -11,6 +11,14 @@ $ make
 ```
 
 # Répertoire data
+ 
+ Il contient 2 fichiers `books.txt`et `users.txt` que vous pouvez utilisez pour tester votre code.
+ Pour ca il suffit de donner chemin vers le repertoire data avec l'application `bibliotheque -d <chemin verrs data>`
 
-Il contient 2 fichiers `books.txt`et `users.txt` que vous pouvez utilisez pour tester votre code.
-Pour ca il suffit de donner chemin vers le repertoire data avec l'application `bibliotheque -d <chemin verrs data>`
+# Interface Graphique Python
+ 
+ Pour compiler le module Python et lancer l'interface :
+ ```bash
+ mkdir -p build && cd build && cmake .. && make
+ python3 ../gui_books.py
+ ```

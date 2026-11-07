@@ -271,6 +271,9 @@ class MainApp(ctk.CTk):
         self.title("Gestion de la Bibliothèque")
         self.geometry("700x500")
 
+        # Handle window close event for automatic save
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
         # Shared library and file manager
         self.library = bibliotheque_py.Library()
         self.file_manager = bibliotheque_py.FileManager("data/books.txt", "data/users.txt")
@@ -297,6 +300,10 @@ class MainApp(ctk.CTk):
 
         self.stats_view = StatsView(self.tabview.tab("Statistiques"), self.library, self.file_manager)
         self.stats_view.pack(fill="both", expand=True)
+
+    def on_closing(self):
+        self.file_manager.save_library_data(self.library)
+        self.destroy()
 
 
 
